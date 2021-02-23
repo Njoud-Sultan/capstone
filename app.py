@@ -1,7 +1,6 @@
 import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
 from datetime import datetime, date
 
 from database.models import db_drop_and_create_all, setup_db, Movie, Actor
@@ -12,12 +11,6 @@ def create_app(test_config=None):
     # create and configure the app
     APP = Flask(__name__)
     setup_db(APP)
-    # CORS(app)
-
-    # APP = create_app()
-
-    # if __name__ == '__main__':
-    #    APP.run(host='127.0.0.1', port=5000, debug=True)
 
     db_drop_and_create_all()
 
@@ -27,6 +20,7 @@ def create_app(test_config=None):
             'success': True
         }), 200
 
+    # endpoint returns all listed actors
     @APP.route('/actors', methods=['GET'])
     def get_actors():
         # query all listed actors
@@ -38,6 +32,7 @@ def create_app(test_config=None):
             'actors': formatted_actors
         }), 200
 
+    # endpoint returns all listed movies
     @APP.route('/movies', methods=['GET'])
     def get_movies():
         # query all listed actors
@@ -49,11 +44,13 @@ def create_app(test_config=None):
             'movies': formatted_movies
         }), 200
 
+    # endpoint to delete an actor from db by id
     @APP.route('/actors/<int:id>', methods=['DELETE'])
     @requires_auth('delete:actor')
     def delete_actor(payload, id):
-        # code
+        # query the actor by id
         actor = Actor.query.filter(Actor.id == id).one_or_none()
+        # handle possible error
         if not actor:
             abort(404)
         try:
@@ -63,11 +60,13 @@ def create_app(test_config=None):
 
         return jsonify({'success': True, 'delete': id}), 200
 
+    # endpoint to delete a movie from db by id
     @APP.route('/movies/<int:id>', methods=['DELETE'])
     @requires_auth('delete:movie')
     def delete_movie(payload, id):
-        # code
+        # query the movie by id
         movie = Movie.query.filter(Movie.id == id).one_or_none()
+        # handle possible error
         if not movie:
             abort(404)
         try:
@@ -77,10 +76,12 @@ def create_app(test_config=None):
 
         return jsonify({'success': True, 'delete': id}), 200
 
+    # endpoint to insert new actor data to db
     @APP.route('/actors', methods=['POST'])
     @requires_auth('post:actor')
     def post_actor(payload):
         data = request.get_json()
+        # handle exceptions while inserting data
         try:
             actor = Actor(name=data['name'], gender=data['gender'], age=data['age'])
             actor.insert()
@@ -92,10 +93,12 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    # endpoint to insert new movie data to db
     @APP.route('/movies', methods=['POST'])
     @requires_auth('post:movie')
     def post_movie(payload):
         data = request.get_json()
+        # handle exceptions while inserting data
         try:
             movie = Movie(title=data['title'], release_date=datetime.strptime(data['release_date'], '%Y-%m-%d'))
             movie.insert()
@@ -107,6 +110,7 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    # endpoint to modify actor data based on id
     @APP.route('/actors/<int:id>', methods=['PATCH'])
     @requires_auth('patch:actor')
     def modify_actor(payload, id):
@@ -123,7 +127,7 @@ def create_app(test_config=None):
 
         if 'age' in data:
             actor.age = data['age']
-
+        # handle possible exceptions
         try:
             actor.update()
         except BaseException:
@@ -134,6 +138,7 @@ def create_app(test_config=None):
             'actor': actor.format()
         }), 200
 
+    # endpoint to modify movie data based on id
     @APP.route('/movies/<int:id>', methods=['PATCH'])
     @requires_auth('patch:movie')
     def modify_movie(payload, id):
@@ -147,7 +152,7 @@ def create_app(test_config=None):
 
         if 'release_date' in data:
             movie.release_date = datetime.strptime(data['release_date'], '%Y-%m-%d')
-
+        # handle possible exceptions
         try:
             movie.update()
         except BaseException:
@@ -159,7 +164,6 @@ def create_app(test_config=None):
         }), 200
 
     # error handling
-
     @APP.errorhandler(422)
     def unprocessable(error):
         return jsonify({
