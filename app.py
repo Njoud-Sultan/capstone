@@ -55,7 +55,7 @@ def create_app(test_config=None):
             abort(404)
         try:
             actor.delete()
-        except BaseException:
+        except Exception:
             abort(400)
 
         return jsonify({'success': True, 'delete': id}), 200
@@ -71,7 +71,7 @@ def create_app(test_config=None):
             abort(404)
         try:
             movie.delete()
-        except BaseException:
+        except Exception:
             abort(400)
 
         return jsonify({'success': True, 'delete': id}), 200
@@ -83,14 +83,18 @@ def create_app(test_config=None):
         data = request.get_json()
         # handle exceptions while inserting data
         try:
-            actor = Actor(name=data['name'], gender=data['gender'], age=data['age'])
+            actor = Actor(
+                name=data['name'],
+                gender=data['gender'],
+                age=data['age']
+            )
             actor.insert()
 
             return jsonify({
                 'success': True,
                 'actor': actor.format()
             }), 200
-        except:
+        except Exception:
             abort(422)
 
     # endpoint to insert new movie data to db
@@ -100,14 +104,20 @@ def create_app(test_config=None):
         data = request.get_json()
         # handle exceptions while inserting data
         try:
-            movie = Movie(title=data['title'], release_date=datetime.strptime(data['release_date'], '%Y-%m-%d'))
+            movie = Movie(
+                title=data['title'],
+                release_date=datetime.strptime(
+                    data['release_date'],
+                    '%Y-%m-%d'
+                )
+            )
             movie.insert()
 
             return jsonify({
                 'success': True,
                 'movie': movie.format()
             }), 200
-        except:
+        except Exception:
             abort(422)
 
     # endpoint to modify actor data based on id
@@ -130,7 +140,7 @@ def create_app(test_config=None):
         # handle possible exceptions
         try:
             actor.update()
-        except BaseException:
+        except Exception:
             abort(400)
 
         return jsonify({
@@ -151,11 +161,13 @@ def create_app(test_config=None):
             movie.title = data['title']
 
         if 'release_date' in data:
-            movie.release_date = datetime.strptime(data['release_date'], '%Y-%m-%d')
+            movie.release_date = datetime.strptime(
+                data['release_date'],
+                '%Y-%m-%d')
         # handle possible exceptions
         try:
             movie.update()
-        except BaseException:
+        except Exception:
             abort(400)
 
         return jsonify({
@@ -212,4 +224,3 @@ def create_app(test_config=None):
 
 
 app = create_app()
-

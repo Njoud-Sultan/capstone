@@ -1,5 +1,13 @@
 # FSND Capstone Project
-This application is created as part of the capstone project for capstone, last of Udacity's Full-stack nanodegree projects.
+##Motivation 
+This application is created as part of the capstone project, last of Udacity's Full-stack nanodegree projects.
+In this project I have worked on implementations covering 
+- SQL and data modeling
+- API development, testing and documentation
+- Access management and Role Based Authentication Control with Auth0
+- Containerization and Testing with Docker
+- Server Deployment with AWS and Heroku
+
 The project models a Casting Agency company that is responsible for creating movies and casting actors.
 
 ###The application is running on: https://njoud-fsnd.herokuapp.com/
@@ -27,11 +35,19 @@ This application provides the following:
 - can add or delete a movie from the DB 
 - can modify an actor or movie data in the DB
 
-### Getting Started
-Installing dependencies:
+###Setup and dependencies
 
+This project is based on python3 which needs to be pre-installed on the system. Using a virtual environment is recommended to keep your dependencies for each project separate and organized.
+
+#### PIP dependencies
+to install required dependencies, run the following command from the root directory of the project:
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+```
+####Environment Variables
+Variables and credentials are stored in the setup.sh file. Execute the following command before running the server to export them into your environment:
+```
+source setup.sh
 ```
 
 ### Running the server
@@ -46,7 +62,7 @@ flask run
 ### Testing
 To run the tests, run
 ```
-python test_app.py
+python3 test_app.py
 ```
 
 ## API Reference
