@@ -1,5 +1,5 @@
 # FSND Capstone Project
-##Motivation 
+## Motivation 
 This application is created as part of the capstone project, last of Udacity's Full-stack nanodegree projects.
 In this project I have worked on implementations covering 
 - SQL and data modeling
@@ -10,7 +10,7 @@ In this project I have worked on implementations covering
 
 The project models a Casting Agency company that is responsible for creating movies and casting actors.
 
-###The application is running on: https://njoud-fsnd.herokuapp.com/
+### The application is running on: https://njoud-fsnd.herokuapp.com/
 
 This application provides the following:
 - viewing all listed actors and movies registered by the company.
@@ -35,7 +35,7 @@ This application provides the following:
 - can add or delete a movie from the DB 
 - can modify an actor or movie data in the DB
 
-###Setup and dependencies
+### Setup and dependencies
 
 This project is based on python3 which needs to be pre-installed on the system. Using a virtual environment is recommended to keep your dependencies for each project separate and organized.
 
@@ -44,7 +44,7 @@ to install required dependencies, run the following command from the root direct
 ```bash
 pip3 install -r requirements.txt
 ```
-####Environment Variables
+#### Environment Variables
 Variables and credentials are stored in the setup.sh file. Execute the following command before running the server to export them into your environment:
 ```
 source setup.sh
@@ -68,7 +68,7 @@ python3 test_app.py
 ## API Reference
 Base URL: The API is hosted on: https://njoud-fsnd.herokuapp.com/
 
-####Authentication: 
+#### Authentication: 
 authentication is required for accessing endpoint with POST, DELETE, or PATCH methods.
 - executive_producer_token
 ```
